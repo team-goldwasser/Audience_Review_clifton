@@ -39,8 +39,12 @@
     "cors": "^2.8.5",
     "eslint": "^5.13.0",
     "express": "^4.16.4",
+    "faker": "^4.1.0",
+    "knex": "^0.16.3",
     "mysql": "^2.16.0",
     "nodemon": "^1.18.10",
+    "pg": "^7.9.0",
+    "postgresql": "0.0.1",
     "react": "^16.8.2",
     "react-bootstrap": "^1.0.0-beta.5",
     "react-dom": "^16.8.2"
