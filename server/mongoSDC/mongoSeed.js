@@ -31,7 +31,7 @@ var seed = () => {
   
   let data = [];
   let records = 100000;
-
+  console.time()
   for (let i = records; i >=0; i--) {
     let reviews = faker.lorem.sentences();
     let user = faker.random.number();
@@ -55,16 +55,15 @@ var seed = () => {
 
   return Reviews.insertMany(data)
     .then(() => {
-      if (count < 100) {
+      if (count < 1) {
         count++;
         seed()
       } else {
-        console.timeEnd('seeding time')
+        console.timeEnd()
       }
     }).then(()=> {
       console.log(`inserted ${data.length} records`)
-    })
-
+    });
       // console.log(`inserted ${data.length} records`)
       // data = [];
       // count++;
