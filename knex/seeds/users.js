@@ -11,12 +11,12 @@ exports.seed =  function(knex, Promise) {
   return knex('users').del()
     .then(  () => {
       const fakeUsers = [];
-      let chuckSize = 100;
-      const data = 1000000;
-      for (let i = 0; i < data; i++) {
+      let chunkSize = 100;
+      const data = 10000000;
+      for (let i = 0; i < data; i+=50) {
         fakeUsers.push(createFakeUser());
       }
-       knex.batchInsert("users",fakeUsers, chuckSize);
+       knex.batchInsert("users" ,fakeUsers, chunkSize);
     });
     
 };

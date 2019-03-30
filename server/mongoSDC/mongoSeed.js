@@ -22,16 +22,17 @@ var reviewSchema = new mongoose.Schema({
 });
 
 
-
 //compile schema to model
 let Reviews = mongoose.model("Reviews", reviewSchema);
 
-var seed = () => {
-  let count = 0;
-  let data = [];
-  let records = 2;
+let count = 0;
 
-  for (let i = 0; i <= records; i++) {
+var seed = () => {
+  
+  let data = [];
+  let records = 100000;
+
+  for (let i = records; i >=0; i--) {
     let reviews = faker.lorem.sentences();
     let user = faker.random.number();
     let movie = faker.random.number();
@@ -39,7 +40,6 @@ var seed = () => {
     let wantSee = faker.random.boolean();
     let liked = faker.random.boolean();
     
-    //define schema
     let review = new Reviews({
       review: reviews,
       user_id: user,
@@ -49,18 +49,28 @@ var seed = () => {
       liked: liked
     });  
     
-    data.push(review)
-    console.log(data);
-
-  Reviews.insertMany(data)
+    data.push(review);
     
-      console.log(`inserted ${data.length} records`)
-      data = [];
-      count++;
-      console.log("count " + count)
-   
   }
+
+  return Reviews.insertMany(data)
+    .then(() => {
+      if (count < 100) {
+        count++;
+        seed()
+      } else {
+        console.timeEnd('seeding time')
+      }
+    }).then(()=> {
+      console.log(`inserted ${data.length} records`)
+    })
+
+      // console.log(`inserted ${data.length} records`)
+      // data = [];
+      // count++;
+      // console.log("count " + count)
 };
 
-seed();
+
+  seed();
 
