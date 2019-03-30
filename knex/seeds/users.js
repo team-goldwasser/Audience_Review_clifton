@@ -6,17 +6,17 @@ const createFakeUser = () => ({
   lastName: faker.name.lastName()
 });
 
-exports.seed = async function(knex, Promise) {
+exports.seed =  function(knex, Promise) {
   //users
-    const fakeUsers = [];
-    const data = 100;
-    for (let i = 0; i < data; i++) {
-      fakeUsers.push(createFakeUser());
-    }
-
-    await 
-      knex("users").del(),
-      knex("users")
-        .insert(fakeUsers);
+  return knex('users').del()
+    .then(  () => {
+      const fakeUsers = [];
+      let chuckSize = 100;
+      const data = 1000000;
+      for (let i = 0; i < data; i++) {
+        fakeUsers.push(createFakeUser());
+      }
+       knex.batchInsert("users",fakeUsers, chuckSize);
+    });
     
 };
