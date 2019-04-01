@@ -20,8 +20,6 @@ var reviewSchema = new mongoose.Schema({
   want_to_see_it: String,
   liked: Boolean,
 });
-
-
 //compile schema to model
 let Reviews = mongoose.model("Reviews", reviewSchema);
 
@@ -48,28 +46,22 @@ var seed = () => {
       want_to_see_it: wantSee,
       liked: liked
     });  
-    
     data.push(review);
-    
   }
-
   return Reviews.insertMany(data)
     .then(() => {
       if (count < 1) {
-        count++;
+        count++
         seed()
       } else {
-        console.timeEnd()
+        console.timeEnd();
       }
     }).then(()=> {
       console.log(`inserted ${data.length} records`)
-    });
-      // console.log(`inserted ${data.length} records`)
-      // data = [];
-      // count++;
-      // console.log("count " + count)
+    });  
 };
 
+seed();
 
-  seed();
-
+module.exports = seed;
+ 
