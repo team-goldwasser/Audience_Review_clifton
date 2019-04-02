@@ -14,24 +14,27 @@ const createReview = () => ({
 exports.seed =  function(knex, Promise) {
  return knex('audience_reviews').del()
   .then(async function ()  {
+    let repeat = 0;
     const reviews = [];
     let chunkSize = 1000;
     const records = 10000000;
     console.time();
-    // if (repeat < 10) {
-    //   repeat++;
-    for (let i = 0; i <= records; i++) {
-      reviews.push(createReview());
-      //  knex.transaction((tr) => {
-    }  
-      await knex.batchInsert('audience_reviews', reviews, chunkSize)
-              // .transacting(tr);
-            .then(result => {
-              console.timeEnd();
-              console.log(`Done loading ${records}`);
-            })
-            .catch((err) => {
-              console.log("Unable to batch insert" , err);
-          });
-  }) ;
+
+    if (repeat < 10) {
+      for (let i = 0; i <= records; i++) {
+        reviews.push(createReview());
+        //  knex.transaction((tr) => {
+      }  
+        await knex.batchInsert('audience_reviews', reviews, chunkSize)
+                // .transacting(tr);
+              .then(result => {
+                console.timeEnd();
+                console.log(`Done loading ${records}`);
+              })
+              .catch((err) => {
+                console.log("Unable to batch insert" , err);
+            });
+        repeat++;
+    };
+  });
 };
