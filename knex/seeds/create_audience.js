@@ -17,7 +17,7 @@ exports.seed =  function(knex, Promise) {
     let repeat = 0;
     const reviews = [];
     let chunkSize = 1000;
-    const records = 10000000;
+    const records = 1000000;
     console.time();
 
     if (repeat < 10) {

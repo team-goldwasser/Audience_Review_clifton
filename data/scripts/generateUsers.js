@@ -25,7 +25,7 @@ fs.writeFile('data/user.json', JSON.stringify(userData, null, 2), 'utf-8', (err)
   if (err) {
     console.log("error writing user data", err);
   }
-})
+});
 
 function getRandomUser(loremArr) {
   return loremArr[getRandomInt(loremArr.length - 1)];

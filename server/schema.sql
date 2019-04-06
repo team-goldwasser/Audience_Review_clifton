@@ -1,5 +1,7 @@
--- DROP DATABASE IF EXISTS reviews;
+DROP DATABASE IF EXISTS reviews;
+CREATE DATABASE reviews;
 
+USE reviews;
 
 CREATE TABLE audience_reviews (
   id INT NOT NULL,
@@ -7,7 +9,7 @@ CREATE TABLE audience_reviews (
   user_id INT,
   movie_id INT,
   stars VARCHAR(10),
-  -- created_at DATETIME,
+  created_at DATETIME,
   not_interested VARCHAR(10),
   want_to_see_it VARCHAR(10),
   liked VARCHAR(10),
@@ -20,8 +22,8 @@ CREATE TABLE users (
   has_profile_pic varchar(10),
   etag varchar(255),
   objectURL varchar(255),
-  PRIMARY KEY(user_id)
-  -- UNIQUE KEY(username)
+  PRIMARY KEY(user_id),
+  UNIQUE KEY(username)
 );
 
 -- CREATE TABLE movies (
