@@ -1,3 +1,6 @@
+const faker = require('faker');
+// const helper = require('./');
+const reviews = require('../data/movieReviews.json');
 
 var findMovieTitle = function (movies) {
   let titles = [];
@@ -35,4 +38,14 @@ var findUserID = function (reviews) {
 };
 
 
+
+const createUser = () => ({
+  user_id: findUserID(reviews),
+ username: faker.name.lastName(),
+ has_profile_pic: faker.random.boolean(),
+ etag: faker.name.jobTitle(),
+ objectURL: faker.image.imageUrl(),
+});
+
+console.log(createUser());
 module.exports = {findMovieTitle,findTitleURL, findUserID, findMovieID}

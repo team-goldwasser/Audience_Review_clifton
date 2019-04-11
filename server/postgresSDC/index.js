@@ -26,9 +26,8 @@ app.get('/reviews/audience/:id', (req, res )=> {
     pool.connect((err, client,  done) => {
       if (err) throw err;
 
-      client.query(`SELECT review FROM audience_reviews WHERE id = ${req.params.id}`, (err, res) => {
+      client.query(`SELECT review FROM audience_reviews WHERE user_id = ${req.params.id}`, (err, res) => {
         done();
-
         if (err) {
           console.log(err.stack);
         } else {
@@ -48,10 +47,11 @@ app.post('/reviews/audience/:id', (req, res) => {
     } 
     pool.connect((err, client, done) => {
       if (err) throw err;
-        let query = 'INSERT INTO audience_reviews (review, user_id, movie_id, stars, not_interested, want_to_see_it) \
-        VALUES ($1, $2, $3, $4, $5, $6)';
 
-        let value = [req.params.review, req.params.user_id, req,params.movie_id, req.params.stars, req.params.not_interested, req.params.want_to_see_it]
+        let query = 'INSERT INTO audience_reviews (review, user_id, stars, not_interested, want_to_see_it) \
+        VALUES ($1, $2, $3, $4, $5)';
+        let value = [req.params.review, req.params.user_id, req.params.stars, req.params.not_interested, req.params.want_to_see_it];
+
         client.query( query, value, (err, res) => {
           done();
         
@@ -73,7 +73,7 @@ app.delete('/reviews/audience/:id', (req, res) => {
       console.log("error deleting record", err)
     }
 
-    let query = `DELETE FROM audience_reviews WHERE id = ${req.params.id}`;
+    let query = `DELETE FROM audience_reviews WHERE user_id = ${req.params.id}`;
 
     client.query(query, (err, result) => {
       done();

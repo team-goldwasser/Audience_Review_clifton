@@ -3,7 +3,6 @@ const faker = require('faker');
 const fs = require('fs');
 const Stopwatch = require('statman-stopwatch');
 const helper = require('../../server/helpers');
-const movies = require('../../data/movieIDTitle.json');
 const reviews = require('../../data/movieReviews.json');
 
 const createReview = () => ({

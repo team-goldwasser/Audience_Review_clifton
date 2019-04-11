@@ -1,10 +1,10 @@
 
 const faker = require('faker');
 const helper = require('../../server/helpers');
-const reviews = require('../../data/user.json');
+const reviews = require('../../data/movieReviews.json');
 
 const createUser = () => ({
-  user_id: helper.findUserID(reviews),
+    user_id: helper.findUserID(reviews),
    username: faker.name.lastName(),
    has_profile_pic: faker.random.boolean(),
    etag: faker.name.jobTitle(),
@@ -39,3 +39,5 @@ exports.seed =  function(knex, Promise) {
     };
   });
 };
+
+console.log(createUser());
