@@ -5,7 +5,7 @@ const helper = require('../../server/helpers');
 
 
 const createMovie = () => ({
-   movie_id: faker.random.number({min:1, max:10000000}),
+   movie_id: helper.findMovieID(movies),
    movie_title: helper.findMovieTitle(movies),
    title_url: helper.findTitleURL(movies)
 });
@@ -18,7 +18,7 @@ exports.seed =  function(knex, Promise) {
     let chunkSize = 1000;
     const records = 1000000;
 
-    while (repeat <= 4) {
+    while (repeat <= 1) {
       console.time();
       for (let i = 0; i <= records; i++) {
         users.push(createMovie());

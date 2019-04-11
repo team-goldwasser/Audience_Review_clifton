@@ -1,8 +1,8 @@
 exports.up = function(knex, Promise) {
   return knex.schema.createTable('users', (table) => {
-    table.increments('user_id').primary(),
-    table.string('username').notNullable();
-    table.string('has_profile_pic').notNullable();
+    table.integer('user_id'),
+    table.string('username')
+    table.string('has_profile_pic')
     table.string('etag');
     table.string('objectURL');
     })

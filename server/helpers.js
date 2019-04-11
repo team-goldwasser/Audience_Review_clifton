@@ -14,6 +14,25 @@ var findTitleURL = function (movies) {
     });
     
   return (movieTitles[Math.floor(Math.random() * movieTitles.length)]);
-}
+};
 
-module.exports = {findMovieTitle,findTitleURL}
+var findMovieID = function (movies) {
+  var movieID = [];
+    movies.forEach(movie => {
+      movieID.push(movie.movie_id);
+    });
+    
+  return (movieID[Math.floor(Math.random() * movieID.length)]);
+};
+
+var findUserID = function (reviews) {
+  var userID = [];
+    reviews.forEach(review => {
+      userID.push(review.user_id);
+    });
+    
+  return (userID[Math.floor(Math.random() * userID.length)]);
+};
+
+
+module.exports = {findMovieTitle,findTitleURL, findUserID, findMovieID}

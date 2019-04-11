@@ -1,7 +1,10 @@
 
 const faker = require('faker');
+const helper = require('../../server/helpers');
+const reviews = require('../../data/user.json');
 
 const createUser = () => ({
+  user_id: helper.findUserID(reviews),
    username: faker.name.lastName(),
    has_profile_pic: faker.random.boolean(),
    etag: faker.name.jobTitle(),
@@ -17,7 +20,7 @@ exports.seed =  function(knex, Promise) {
     const records = 1000000;
     console.time();
 
-    while (repeat <= 4) {
+    while (repeat <= 1) {
       for (let i = 0; i <= records; i++) {
         users.push(createUser());
         //  knex.transaction((tr) => {

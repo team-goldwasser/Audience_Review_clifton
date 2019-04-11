@@ -2,23 +2,15 @@
 const faker = require('faker');
 const fs = require('fs');
 const Stopwatch = require('statman-stopwatch');
-
-// const getUserID = () => {
-//   fs.readFile('data/movieIDTitle.json', 'utf-8', (err, data) => {
-//     if (err) {
-//       console.log("Error reading movie ID file", err);
-//     } else {
-//       console.log(data)
-//     }
-// }  
-
-// getUserID()
+const helper = require('../../server/helpers');
+const movies = require('../../data/movieIDTitle.json');
+const reviews = require('../../data/movieReviews.json');
 
 const createReview = () => ({
    review :faker.lorem.words(),
-   user_id : faker.random.number(),
-   movie_id : faker.random.number(),
-   stars: faker.random.number(),
+   user_id : helper.findUserID(reviews),
+   movie_id : helper.findMovieID(reviews),
+   stars: faker.random.number({min:1, max: 5}),
    not_interested  :faker.random.boolean(),
    want_to_see_it : faker.random.boolean(),
    liked : faker.random.boolean()
@@ -35,7 +27,7 @@ exports.seed =  function(knex, Promise) {
       let chunkSize = 1000;
       const records = 1000000;
   
-      while (repeat <= 4) {
+      while (repeat <= 1) {
         var st = new Stopwatch(true);
         console.time()
         for (let i = 0; i <= records; i++) {
