@@ -2,8 +2,8 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const db = require('../db');
-const {Pool} = require('pg');
+//const db = require('../db');
+const {Pool, Client} = require('pg');
 var cors = require('cors');
 
 const app = express();
@@ -21,50 +21,79 @@ const pool = new Pool({
   connectionTimeoutMillis: 2000,
 });
 
-app.get('/reviews/audience/:title', (req, res)=> {
-  pool.connect((err, results) => {
-    if (err) {
-      console.log("error retreiving records", err)
-    } 
-    pool.connect((err, client, done) => {
-      if (err) throw err
-      client.query(`SELECT from audience_reviews where ${req.params.title} = 9999999`, (err, res) => {
+//returns the reviews for the a movieid
+app.get('/reviews/audience/:id', (req, res )=> {
+    pool.connect((err, client,  done) => {
+      if (err) throw err;
+
+      client.query(`SELECT review FROM audience_reviews WHERE id = ${req.params.id}`, (err, res) => {
         done();
+
         if (err) {
           console.log(err.stack);
         } else {
           console.log(res.rows[0]);
-          res.send(results.row);
+          //res.send(results.row);
         }
       });
     });
   });
-});
 
-app.put('/reviews/audience/:title', (req, res) => {
+
+// insert a review for a specific movie_id
+app.post('/reviews/audience/:id', (req, res) => {
   pool.connect((err, results) => {
     if (err) {
       console.log("error retreiving records", err)
     } 
     pool.connect((err, client, done) => {
       if (err) throw err;
-      client.query(`INSERT into audience_reviews where ${req.params.title} = 9999999`, (err, res) => {
-        done();
+        let query = 'INSERT INTO audience_reviews (review, user_id, movie_id, stars, not_interested, want_to_see_it) \
+        VALUES ($1, $2, $3, $4, $5, $6)';
+
+        let value = [req.params.review, req.params.user_id, req,params.movie_id, req.params.stars, req.params.not_interested, req.params.want_to_see_it]
+        client.query( query, value, (err, res) => {
+          done();
+        
         if (err) {
           console.log(err.stack);
         } else {
           console.log(res.rows[0]);
-          res.send(results.row);
+          // res.send(results.row);
         }
       });
     });
   });
 });
 
+//remove a showtime by its id
+app.delete('/reviews/audience/:id', (req, res) => {
+  pool.connect((err, results ) => {
+    if (err) {
+      console.log("error deleting record", err)
+    }
 
-app.put('/attendees', Attendee.delete);
+    let query = `DELETE FROM audience_reviews WHERE id = ${req.params.id}`;
 
-const PORT = process.env.PORT || 3000;
+    client.query(query, (err, result) => {
+      done();
+
+      if (err) {
+        console.log('Error deleting record', err.stack);
+      }
+        console.log(result);
+        res.status(200).send(result);
+    });
+  });
+});
+
+
+app.put('/reviews/audience/:id', (req, res) => {
+
+})
+
+
+const PORT = process.env.PORT || 9004;
 
 app.listen(PORT, () => {
   console.log(`Web server running on: http://localhost:${PORT}`);

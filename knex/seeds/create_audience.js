@@ -1,5 +1,18 @@
 
 const faker = require('faker');
+const fs = require('fs');
+const Stopwatch = require('statman-stopwatch');
+
+// const getUserID = () => {
+//   fs.readFile('data/movieIDTitle.json', 'utf-8', (err, data) => {
+//     if (err) {
+//       console.log("Error reading movie ID file", err);
+//     } else {
+//       console.log(data)
+//     }
+// }  
+
+// getUserID()
 
 const createReview = () => ({
    review :faker.lorem.words(),
@@ -12,29 +25,33 @@ const createReview = () => ({
 });
 
 exports.seed =  function(knex, Promise) {
- return knex('audience_reviews').del()
-  .then(async function ()  {
-    let repeat = 0;
-    const reviews = [];
-    let chunkSize = 1000;
-    const records = 1000000;
-    console.time();
 
-    if (repeat < 10) {
-      for (let i = 0; i <= records; i++) {
-        reviews.push(createReview());
-        //  knex.transaction((tr) => {
-      }  
-        await knex.batchInsert('audience_reviews', reviews, chunkSize)
-                // .transacting(tr);
-              .then(result => {
-                console.timeEnd();
-                console.log(`Done loading ${records}`);
-              })
-              .catch((err) => {
-                console.log("Unable to batch insert" , err);
-            });
-        repeat++;
-    };
+ return knex('audience_reviews').del()
+  .then(
+
+    async function seedReviews()  {
+      let repeat = 0;
+      const reviews = [];
+      let chunkSize = 1000;
+      const records = 1000000;
+  
+      while (repeat <= 4) {
+        var st = new Stopwatch(true);
+        console.time()
+        for (let i = 0; i <= records; i++) {
+          reviews.push(createReview());
+        }  
+          await knex.batchInsert('audience_reviews', reviews, chunkSize)
+                  // .transacting(tr);
+                .then(result => {
+                  console.timeEnd();
+                  console.log(`Done loading ${records} into audience_reviews table`);
+                  console.log('repeat', repeat);
+                })
+                .catch((err) => {
+                  console.log("Unable to batch insert" , err);
+              });
+          repeat++;
+      };
   });
 };
