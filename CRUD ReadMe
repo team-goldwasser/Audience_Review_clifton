@@ -1,0 +1,63 @@
+
+
+
+Create / POST - /reviews/audience/:id
+
+Add a new review to the movie id
+
+Read / GET -  get all the audience reviews for a user)id
+
+app.get('/reviews/audience/:id', (req, res ) => {
+  console.log(req.params.id);
+  knex('audience_reviews').where({user_id: req.params.id}).select()
+    .then((data) => {
+      console.log(data);
+      res.status(200).send(data);
+    })
+    .catch((err)=> {
+      console.log('err', err);
+    });
+  
+  });
+  
+  Create / POST - /reviews/audience/:id
+  
+// insert a review for a specific movie_id
+app.post('/reviews/audience/:id', (req, res) => {
+  console.log(req.params.id);
+  let review = req.body.data
+  knex('audience_reviews').insert(review)
+    .then((result) => {
+      console.log(result);
+      res.status(200).send(`${result} was added to the forum`);
+    })
+    .catch((err)=> {
+      console.log('err', err);
+    });
+
+
+
+
+Delete / DELETE - delete a review for the specific id
+
+app.delete('/reviews/audience/:id', (req, res) => {
+  knex('audience_review').where({user_id: req.params.id})
+    .delete()
+    .then((result) => {
+      let msg = `${req.params.id} was deleted`
+      res.status(200).send(msg);
+    });
+});
+
+
+Update / PUT - update a review
+
+app.put('/reviews/audience/:id', (req, res) => {
+  knex('audience_review').where({user_id: req.params.id} )
+    .update(req.body)
+    .then((result)=> {
+      console.log(result);
+      res.status(200).send(result);
+    });
+  });
+});
