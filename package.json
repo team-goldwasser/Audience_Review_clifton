@@ -37,6 +37,7 @@
     "webpack-cli": "^3.2.1"
   },
   "dependencies": {
+    "artillery": "^1.6.0-27",
     "cors": "^2.8.5",
     "eslint": "^5.13.0",
     "express": "^4.16.4",
@@ -46,6 +47,7 @@
     "mongoose": "^5.4.20",
     "morgan": "^1.9.1",
     "mysql": "^2.16.0",
+    "newrelic": "^5.6.3",
     "nodemon": "^1.18.10",
     "pg": "^7.9.0",
     "postgresql": "0.0.1",

@@ -2,96 +2,103 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-//const db = require('../db');
-const {Pool, Client} = require('pg');
-var cors = require('cors');
-
+const knex = require('../../knex/knex');
 const app = express();
-app.use(morgan('dev'));
-app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, '../client/public')));
+var cors = require('cors');
+var db = require('../database/helper');
+const newRelic = require('newrelic');
 
-const pool = new Pool({
-  user: 'clifton',
-  host: 'localhost',
-  database: 'reviews',
-  password: '',
-  max: 20,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
 });
+app.use(express.static(__dirname + '/../client/dist'));
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(cors());
 
-//returns the reviews for the a movieid
-app.get('/reviews/audience/:id', (req, res )=> {
-    pool.connect((err, client,  done) => {
-      if (err) throw err;
+app.options('*', cors());
 
-      client.query(`SELECT review FROM audience_reviews WHERE user_id = ${req.params.id}`, (err, res) => {
-        done();
-        if (err) {
-          console.log(err.stack);
-        } else {
-          console.log(res.rows[0]);
-          //res.send(results.row);
-        }
-      });
+
+// app.get('/reviews/audience/:title', (req, res) => {
+//   db.getAudienceReview(req.params.title, (err, results) => {
+//     if (err) {
+//       throw err;
+//     } else {
+//       res.send(JSON.stringify(results, null, 2));
+//     }
+//   });
+// });
+
+// app.get('/reviews/scoreboard/:title', (req, res) => {
+//   db.getAudienceScoreboard(req.params.title, (err, results) => {
+//     if (err) {
+//       throw err;
+//     } else {
+//       res.send(JSON.stringify(results, null, 2));
+//     }
+//   });
+// });
+
+// //returns the reviews for the a movieid
+app.get('/reviews/audience/:id', (req, res ) => {
+  knex.from('audience_reviews').innerJoin('users', 'audience_reviews.user_id', 'users.user_id').select().limit(4)
+    .then((data) => {
+      console.log('data',data);
+      res.status(200).send(data);
+    })
+    .catch((err)=> {
+      console.log('err', err);
     });
+  
   });
-
+  // var getAudienceReview = function(id, callback) {
+  //   connection.query(`SELECT id, users.username, review, stars FROM audience_reviews \
+  //   INNER JOIN users ON users.user_id = audience_reviews.user_id 
+  //   AND movie_id=${id} LIMIT 4;`, (err, results) => {
+  //     if (err) {
+  //       console.log("Error getting reviews", err);
+  //     } else {
+  //       callback(null, results);
+  //     }
+  //   });
+  // }
+  
 
 // insert a review for a specific movie_id
 app.post('/reviews/audience/:id', (req, res) => {
-  pool.connect((err, results) => {
-    if (err) {
-      console.log("error retreiving records", err)
-    } 
-    pool.connect((err, client, done) => {
-      if (err) throw err;
-
-        let query = 'INSERT INTO audience_reviews (review, user_id, stars, not_interested, want_to_see_it) \
-        VALUES ($1, $2, $3, $4, $5)';
-        let value = [req.params.review, req.params.user_id, req.params.stars, req.params.not_interested, req.params.want_to_see_it];
-
-        client.query( query, value, (err, res) => {
-          done();
-        
-        if (err) {
-          console.log(err.stack);
-        } else {
-          console.log(res.rows[0]);
-          // res.send(results.row);
-        }
-      });
+  let review = req.body.data
+  knex('audience_reviews').insert(review)
+    .then((result) => {
+      console.log(result);
+      res.status(200).send(`${result} was added to the forum`);
+    })
+    .catch((err)=> {
+      console.log('err', err);
     });
-  });
-});
 
-//remove a showtime by its id
+
+
+
 app.delete('/reviews/audience/:id', (req, res) => {
-  pool.connect((err, results ) => {
-    if (err) {
-      console.log("error deleting record", err)
-    }
-
-    let query = `DELETE FROM audience_reviews WHERE user_id = ${req.params.id}`;
-
-    client.query(query, (err, result) => {
-      done();
-
-      if (err) {
-        console.log('Error deleting record', err.stack);
-      }
-        console.log(result);
-        res.status(200).send(result);
+  knex('audience_review').where({user_id: req.params.id})
+    .delete()
+    .then((result) => {
+      let msg = `${req.params.id} was deleted`
+      res.status(200).send(msg);
     });
-  });
 });
 
 
 app.put('/reviews/audience/:id', (req, res) => {
-
-})
-
+  knex('audience_review').where({user_id: req.params.id} )
+    .update(req.body)
+    .then((result)=> {
+      console.log(result);
+      res.status(200).send(result);
+    });
+  });
+});
 
 const PORT = process.env.PORT || 9004;
 

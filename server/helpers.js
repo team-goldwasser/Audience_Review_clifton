@@ -40,7 +40,7 @@ var findUserID = function (reviews) {
 
 
 const createUser = () => ({
-  user_id: findUserID(reviews),
+ user_id: findUserID(reviews),
  username: faker.name.lastName(),
  has_profile_pic: faker.random.boolean(),
  etag: faker.name.jobTitle(),

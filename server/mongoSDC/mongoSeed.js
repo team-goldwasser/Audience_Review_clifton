@@ -24,7 +24,6 @@ var reviewSchema = new mongoose.Schema({
 });
 
 var userSchema = new mongoose.Schema({
-
   username: String,
   has_profile_pic: Boolean,
   etag: Boolean,
@@ -101,7 +100,6 @@ var userSeed = () => {
 
       data.push(users);
     }
-
   return Users.insertMany(data)
     .then(() => {
       if (count2 < 2) {
