@@ -20,7 +20,7 @@ exports.seed =  function(knex, Promise) {
     const records = 1000000;
     console.time();
 
-    while (repeat <= 1) {
+    while (repeat <= 4) {
       for (let i = 0; i <= records; i++) {
         users.push(createUser());
         //  knex.transaction((tr) => {

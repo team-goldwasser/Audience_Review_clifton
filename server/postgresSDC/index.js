@@ -20,25 +20,6 @@ app.use(cors());
 app.options('*', cors());
 
 
-// app.get('/reviews/audience/:title', (req, res) => {
-//   db.getAudienceReview(req.params.title, (err, results) => {
-//     if (err) {
-//       throw err;
-//     } else {
-//       res.send(JSON.stringify(results, null, 2));
-//     }
-//   });
-// });
-
-// app.get('/reviews/scoreboard/:title', (req, res) => {
-//   db.getAudienceScoreboard(req.params.title, (err, results) => {
-//     if (err) {
-//       throw err;
-//     } else {
-//       res.send(JSON.stringify(results, null, 2));
-//     }
-//   });
-// });
 
 // //returns the reviews for the a movieid
 app.get('/reviews/audience/:id', (req, res ) => {
@@ -50,24 +31,12 @@ app.get('/reviews/audience/:id', (req, res ) => {
     .catch((err)=> {
       console.log('err', err);
     });
-  
   });
-  // var getAudienceReview = function(id, callback) {
-  //   connection.query(`SELECT id, users.username, review, stars FROM audience_reviews \
-  //   INNER JOIN users ON users.user_id = audience_reviews.user_id 
-  //   AND movie_id=${id} LIMIT 4;`, (err, results) => {
-  //     if (err) {
-  //       console.log("Error getting reviews", err);
-  //     } else {
-  //       callback(null, results);
-  //     }
-  //   });
-  // }
-  
+
 
 // insert a review for a specific movie_id
 app.post('/reviews/audience/:id', (req, res) => {
-  let review = req.body.data
+  var review = req.body.data;
   knex('audience_reviews').insert(review)
     .then((result) => {
       console.log(result);
@@ -77,18 +46,14 @@ app.post('/reviews/audience/:id', (req, res) => {
       console.log('err', err);
     });
 
-
-
-
 app.delete('/reviews/audience/:id', (req, res) => {
   knex('audience_review').where({user_id: req.params.id})
     .delete()
     .then((result) => {
-      let msg = `${req.params.id} was deleted`
+      let msg = `${req.params.id} was deleted`;
       res.status(200).send(msg);
     });
 });
-
 
 app.put('/reviews/audience/:id', (req, res) => {
   knex('audience_review').where({user_id: req.params.id} )

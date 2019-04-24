@@ -38,7 +38,6 @@ var findUserID = function (reviews) {
 };
 
 
-
 const createUser = () => ({
  user_id: findUserID(reviews),
  username: faker.name.lastName(),

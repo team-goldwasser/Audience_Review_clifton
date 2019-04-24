@@ -1,0 +1,19 @@
+config:
+  target: 'http://localhost:9004'
+  phases:
+    - duration: 60
+      arrivalRate: 100
+scenarios:
+  - flow:
+      - get:
+          url: "/reviews/audience/${{randomnumber(8888888,9999999)}}"
+
+  - flow:
+      - get:
+          url: "/reviews/audience/3"
+          json:
+              id: "3"
+              review: "This movie sucks"
+              user_id: "1000"
+              movie_id: "181808"
+              stars: "3"

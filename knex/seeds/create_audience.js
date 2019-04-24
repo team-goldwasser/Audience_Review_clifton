@@ -26,7 +26,7 @@ exports.seed =  function(knex, Promise) {
       let chunkSize = 1000;
       const records = 1000000;
   
-      while (repeat <= 1) {
+      while (repeat <= 4) {
         var st = new Stopwatch(true);
         console.time()
         for (let i = 0; i <= records; i++) {
