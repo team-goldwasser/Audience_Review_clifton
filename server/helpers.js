@@ -46,5 +46,4 @@ const createUser = () => ({
  objectURL: faker.image.imageUrl(),
 });
 
-console.log(createUser());
 module.exports = {findMovieTitle,findTitleURL, findUserID, findMovieID}

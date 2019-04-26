@@ -8,7 +8,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: "27205",
+      id: "",
       urlTitle: getMovieIDURL(),
       reviews: [],
       environment: getEnvironment(),

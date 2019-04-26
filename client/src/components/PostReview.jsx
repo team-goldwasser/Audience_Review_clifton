@@ -5,7 +5,8 @@ class PostReview extends React.Component {
     super(props);
     this.state = {
       value: ""
-    }
+    };
+    
     this.handleChange = this.handleChange.bind(this);
   }
 

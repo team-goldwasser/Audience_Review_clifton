@@ -1,11 +1,10 @@
 const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
-const morgan = require('morgan');
 const knex = require('../../knex/knex');
 const app = express();
 var cors = require('cors');
-var db = require('../database/helper');
+//var db = require('../database/helper');
 const newRelic = require('newrelic');
 
 app.use(function(req, res, next) {
@@ -23,7 +22,8 @@ app.options('*', cors());
 
 // //returns the reviews for the a movieid
 app.get('/reviews/audience/:id', (req, res ) => {
-  knex.from('audience_reviews').innerJoin('users', 'audience_reviews.user_id', 'users.user_id').select().limit(4)
+  let id = req.params.id;
+  knex.from('audience_reviews').innerJoin('users', 'audience_reviews.user_id', 'users.user_id').select().where('id',id).limit(1)
     .then((data) => {
       res.status(200).send(data);
     })
@@ -65,5 +65,5 @@ app.put('/reviews/audience/:id', (req, res) => {
 const PORT = process.env.PORT || 9004;
 
 app.listen(PORT, () => {
-  console.log(`Web server running on: http://localhost:${PORT}`);
+  console.log(`Web server running on: ${PORT}`);
 });

@@ -35,7 +35,7 @@ app.get('/reviews/scoreboard/:title', (req, res) => {
   });
 });
 
-let port = process.env.PORT || 9004;
+let port = process.env.PORT || 9007;
 
 var server = app.listen(port, function() {
   console.log(`listening on port ${port}`);
