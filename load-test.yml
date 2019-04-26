@@ -9,11 +9,11 @@ scenarios:
           url: "/reviews/audience/${{randomnumber(8888888,9999999)}}"
 
   - flow:
-      - get:
-          url: "/reviews/audience/3"
+      - post:
+          url: "/reviews/audience/{{randomnumber(8000000,9000000}}"
           json:
-              id: "3"
+              id: "26375"
               review: "This movie sucks"
-              user_id: "1000"
-              movie_id: "181808"
+              user_id: "47"
+              movie_id: "489999"
               stars: "3"

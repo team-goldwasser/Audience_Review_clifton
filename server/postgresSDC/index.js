@@ -25,7 +25,6 @@ app.options('*', cors());
 app.get('/reviews/audience/:id', (req, res ) => {
   knex.from('audience_reviews').innerJoin('users', 'audience_reviews.user_id', 'users.user_id').select().limit(4)
     .then((data) => {
-      console.log('data',data);
       res.status(200).send(data);
     })
     .catch((err)=> {
@@ -39,7 +38,6 @@ app.post('/reviews/audience/:id', (req, res) => {
   var review = req.body.data;
   knex('audience_reviews').insert(review)
     .then((result) => {
-      console.log(result);
       res.status(200).send(`${result} was added to the forum`);
     })
     .catch((err)=> {
@@ -59,7 +57,6 @@ app.put('/reviews/audience/:id', (req, res) => {
   knex('audience_review').where({user_id: req.params.id} )
     .update(req.body)
     .then((result)=> {
-      console.log(result);
       res.status(200).send(result);
     });
   });

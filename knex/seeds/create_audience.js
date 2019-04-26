@@ -18,9 +18,7 @@ const createReview = () => ({
 exports.seed =  function(knex, Promise) {
 
  return knex('audience_reviews').del()
-  .then(
-
-    async function seedReviews()  {
+  .then( async function seedReviews()  {
       let repeat = 0;
       const reviews = [];
       let chunkSize = 1000;
