@@ -1,7 +1,13 @@
 DROP DATABASE IF EXISTS reviews;
 CREATE DATABASE reviews;
 
-USE reviews;
+IF NOT EXISTS CREATE DATABASE reviews;
+
+DROP TABLE showtimes;
+
+DROP TABLE theaters;
+DROP TABLE movies;
+
 
 CREATE TABLE audience_reviews (
   id INT NOT NULL,
